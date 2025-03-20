@@ -5,7 +5,7 @@ import numpy as np
 import os
 
 
-def visualization(ori_data, generated_data, analysis, outputs_dir,model_name):
+def visualization(ori_data, generated_data, analysis, outputs_dir,model_name,data_name):
     """Using PCA or tSNE for generated and original data visualization.
 
     Args:
@@ -55,10 +55,10 @@ def visualization(ori_data, generated_data, analysis, outputs_dir,model_name):
                     c=colors[anal_sample_no:], alpha=0.2, label="Synthetic")
 
         ax.legend()
-        plt.title(f'{model_name}_PCA plot')
+        plt.title(f'{model_name}-{data_name}_PCA plot')
         plt.xlabel('x-pca')
         plt.ylabel('y_pca')
-        plt.savefig(os.path.join(outputs_dir, f'{model_name}_PCA.png'), dpi=800)
+        plt.savefig(os.path.join(outputs_dir, f'{model_name}-{data_name}_PCA.png'), dpi=800)
         plt.show()
 
 
@@ -81,8 +81,8 @@ def visualization(ori_data, generated_data, analysis, outputs_dir,model_name):
 
         ax.legend()
 
-        plt.title('t-SNE plot')
+        plt.title(f'{model_name}-{data_name}_t-SNE plot')
         plt.xlabel('x-tsne')
         plt.ylabel('y_tsne')
-        plt.savefig(os.path.join(outputs_dir, 't-SNE.png'), dpi=800)
+        plt.savefig(os.path.join(outputs_dir, f'{model_name}-{data_name}_t-SNE.png'), dpi=800)
         plt.show()

@@ -64,7 +64,7 @@ def timegantrain(opt, ori_data):
     print('Finish Joint Training')
 
     # Save trained networks
-    model.save_trained_networks()
+    model.save_trained_networks(opt.data_name)
 
 
 def timegantest(opt, ori_data):
@@ -72,14 +72,17 @@ def timegantest(opt, ori_data):
     print('Start Testing')
     # Model Setting
     model = timegan.TimeGAN(opt, ori_data)
-    model.load_trained_networks()
+    model.load_trained_networks(opt.data_name)
 
     # Synthetic data generation
-    if opt.augargs.ganargs.synth_size != 0:
-        synth_size = opt.opt.augargs.ganargs.synth_size
+    if opt.augargs.ganargs.synth_size != 0 and opt.augargs.ganargs.synth_size < len(ori_data):
+        synth_size = opt.augargs.ganargs.synth_size
+        ori_data1 = ori_data[:synth_size]
     else:
         synth_size = int(len(ori_data))
-    generated_data = model.gen_synth_data(synth_size,ori_data)
+        ori_data1 = ori_data
+    print(ori_data1.shape)
+    generated_data = model.gen_synth_data(synth_size,ori_data1)
     generated_data = generated_data.cpu().detach().numpy()
     print(generated_data.shape)
     print(ori_data.shape)
@@ -121,8 +124,8 @@ def timegantest(opt, ori_data):
         num_samples=5,
     )
     # 3. Visualization (PCA and tSNE)
-    visualization(ori_data, gen_data, 'pca', opt.out_dir,"timeGAN")
-    visualization(ori_data, gen_data, 'tsne', opt.out_dir,"timeGAN")
+    visualization(ori_data, gen_data, 'pca', opt.out_dir + "/dataaug_metrics","timeGAN",opt.data_name)
+    visualization(ori_data, gen_data, 'tsne', opt.out_dir,"timeGAN",opt.data_name)
 
 
     # Print discriminative and predictive scores

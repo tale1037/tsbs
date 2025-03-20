@@ -142,20 +142,20 @@ class TimeGAN:
             self.D_loss.backward()
             self.optim_discriminator.step()
 
-    def load_trained_networks(self):
+    def load_trained_networks(self,data_name):
         print("Loading trained networks")
-        self.embedder.load_state_dict(torch.load(os.path.join(self.opt.augargs.ganargs.networks_dir, 'embedder.pth')))
-        self.recovery.load_state_dict(torch.load(os.path.join(self.opt.augargs.ganargs.networks_dir, 'recovery.pth')))
-        self.generator.load_state_dict(torch.load(os.path.join(self.opt.augargs.ganargs.networks_dir, 'generator.pth')))
-        self.discriminator.load_state_dict(torch.load(os.path.join(self.opt.augargs.ganargs.networks_dir, 'discriminator.pth')))
-        self.supervisor.load_state_dict(torch.load(os.path.join(self.opt.augargs.ganargs.networks_dir, 'supervisor.pth')))
+        self.embedder.load_state_dict(torch.load(os.path.join(self.opt.augargs.ganargs.networks_dir, f'{data_name}-embedder.pth')))
+        self.recovery.load_state_dict(torch.load(os.path.join(self.opt.augargs.ganargs.networks_dir, f'{data_name}-recovery.pth')))
+        self.generator.load_state_dict(torch.load(os.path.join(self.opt.augargs.ganargs.networks_dir, f'{data_name}-generator.pth')))
+        self.discriminator.load_state_dict(torch.load(os.path.join(self.opt.augargs.ganargs.networks_dir, f'{data_name}-discriminator.pth')))
+        self.supervisor.load_state_dict(torch.load(os.path.join(self.opt.augargs.ganargs.networks_dir, f'{data_name}-supervisor.pth')))
         print("Done.")
 
-    def save_trained_networks(self):
+    def save_trained_networks(self,data_name):
         print("Saving trained networks")
-        torch.save(self.embedder.state_dict(), os.path.join(self.opt.augargs.ganargs.networks_dir, 'embedder.pth'))
-        torch.save(self.recovery.state_dict(), os.path.join(self.opt.augargs.ganargs.networks_dir, 'recovery.pth'))
-        torch.save(self.generator.state_dict(), os.path.join(self.opt.augargs.ganargs.networks_dir, 'generator.pth'))
-        torch.save(self.discriminator.state_dict(), os.path.join(self.opt.augargs.ganargs.networks_dir, 'discriminator.pth'))
-        torch.save(self.supervisor.state_dict(), os.path.join(self.opt.augargs.ganargs.networks_dir, 'supervisor.pth'))
+        torch.save(self.embedder.state_dict(), os.path.join(self.opt.augargs.ganargs.networks_dir, f'{data_name}-embedder.pth'))
+        torch.save(self.recovery.state_dict(), os.path.join(self.opt.augargs.ganargs.networks_dir, f'{data_name}-recovery.pth'))
+        torch.save(self.generator.state_dict(), os.path.join(self.opt.augargs.ganargs.networks_dir, f'{data_name}-generator.pth'))
+        torch.save(self.discriminator.state_dict(), os.path.join(self.opt.augargs.ganargs.networks_dir, f'{data_name}-discriminator.pth'))
+        torch.save(self.supervisor.state_dict(), os.path.join(self.opt.augargs.ganargs.networks_dir, f'{data_name}-supervisor.pth'))
         print("Done.")

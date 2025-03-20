@@ -7,9 +7,10 @@ from metrics.visualization_metrics import visualization
 from modeloader import get_model
 
 
-def printplot(args,train_data,gen_data,model_name):
-    visualization(train_data, gen_data, "pca", args.out_dir,model_name)
-    visualization(train_data, gen_data, "tsne", args.out_dir,model_name)
+def printplot(args,train_data,gen_data,model_name,data_name):
+    out_dir = args.out_dir + "/dataaug_metrics"
+    visualization(train_data, gen_data, "pca", out_dir,model_name,data_name)
+    visualization(train_data, gen_data, "tsne", out_dir,model_name,data_name)
 
 
 def train_aug_models(args,model_name,train_data):
@@ -43,7 +44,8 @@ def trainVAE(args,train_data,model_name):
     model.save(args.save_dir + args.augargs.vaeargs.save_dir,args.data_name)
     #gen_data = generateDatafromVAE(args,train_data,model_name)
     gen_data = model.get_prior_samples(len(train_data))
-    printplot(args,train_data,gen_data,model_name)
+
+    printplot(args,train_data,gen_data,model_name,args.data_name)
 
 def generateDatafromVAE(args,ori_data,model_name):
     #model = get_model("timevae", args)
@@ -58,7 +60,7 @@ def trainGAN(args, train_data, model_name):
 
 def generateDatafromGAN(args,ori_data,model_name):
     model,_ = get_model(model_name, args, ori_data)
-    model.load_trained_networks()
+    model.load_trained_networks(args.data_name)
     if args.augargs.ganargs.synth_size != 0:
         synth_size = args.augargs.ganargs.synth_size
     else:

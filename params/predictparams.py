@@ -6,7 +6,7 @@ def get_predict_params():
     predictmodelparser.add_argument("-model", type=str, default="GRU", help="name")
     predictmodelparser.add_argument("-outputSize", type=int, default=1, help="输出规模（横向）")
     predictmodelparser.add_argument("-learningRate", type=float, default=0.001, help="模型学习率")
-    predictmodelparser.add_argument("-epochs", type=int, default=20, help="学习轮数")
+    predictmodelparser.add_argument("-epochs", type=int, default=50, help="学习轮数")
     predictmodelparser.add_argument("-inputSize", type=int, default=7, help="输入大小(feat_dim)")
     predictmodelparser.add_argument("-save_dir", type=str, default="/savedmodels", help="模型存储路径")
     predictmodelparser.add_argument("-hiddenSize", type=int, default=64)

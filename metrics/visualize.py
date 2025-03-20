@@ -14,6 +14,7 @@ def plot_samples(
     samples2: Optional[np.ndarray] = None,
     samples2_name: Optional[str] = None,
     num_samples: int = 5,
+    model_name: str = "jitter"
 ) -> None:
     """
     Plot one or two sets of samples.
@@ -60,6 +61,7 @@ def plot_samples(
         fig.suptitle(samples1_name, fontsize=TITLE_FONT_SIZE)
 
     fig.tight_layout()
+    plt.savefig(f"{model_name}.png")
     plt.show()
 
 

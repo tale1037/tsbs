@@ -9,6 +9,7 @@ class GRU(nn.Module):
         self.hidden_size = hidden_size
         self.gru = nn.GRU(input_size, self.hidden_size, n_layers, bias=True, batch_first=True)  # output (batch_size, obs_len, hidden_size)
         self.linear = nn.Linear(self.hidden_size, output_size)
+        self.sigmoid = nn.Sigmoid()
         self.device = device
 
     def forward(self, x):
@@ -18,4 +19,4 @@ class GRU(nn.Module):
         last_output = out[:, -self.pre_len:, :]
         H = self.linear(last_output)
         #print(len(H))
-        return H
+        return self.sigmoid(H)
