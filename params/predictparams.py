@@ -16,6 +16,7 @@ def get_predict_params():
     predictmodelparser.add_argument('-dropout', type=float, default=0.05, help="随机丢弃概率,防止过拟合")
     predictmodelparser.add_argument('-forecasting', type=bool, default=False, help="目前是否是预测任务")
     predictmodelparser.add_argument("-feat_pred_no", type=int, default=2)
+    predictmodelparser.add_argument("-seq_len", type=int, default=24)
     predictmodelparser.add_argument("-pre_len", type=int, default=5)
 
     return predictmodelparser.parse_args()

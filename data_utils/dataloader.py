@@ -102,7 +102,24 @@ def load_data(args,isaug):
         data, data, test_size=args.split_ratio, random_state=args.seed
     )
     return data,train_data,test_data,scaler
+def load_data_from_gen(gen_datas,model_names,seq_len):
+    for model_name in model_names:
+        gen_datas[model_name] = set_data_seq(gen_datas[model_name],seq_len)
+    return gen_datas
 
+def set_data_seq(ori_data,seq_len):
+    print(ori_data.shape)
+    temp_data = []
+    for seq in range(0,len(ori_data)):
+        for i in range(0, len(ori_data[0]) - seq_len):
+            _x = ori_data[seq][i:i + seq_len]
+            temp_data.append(_x)
+    idx = np.random.permutation(len(temp_data))
+    data = []
+    for i in range(len(temp_data)):
+        data.append(temp_data[idx[i]])
+    data = np.array(data)
+    return data
 
 def createlabels(args,data):
     pre_len = args.predictargs.pre_len

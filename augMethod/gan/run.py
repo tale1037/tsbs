@@ -24,7 +24,7 @@ def timegantrain(opt, ori_data):
         model.train_embedder()
 
         logger.set_description('step: ' + str(i) + '/' + str(opt.iterations) +
-                  ', e_loss: ' + str(np.round(np.sqrt(model.E_loss_T0.item()), 4)))
+                  ', e_loss: ' + str(np.round(np.sqrt(model.E_loss0.item()), 4)))
     print('Finish Embedding Network Training')
 
     # 2. Training only with supervised loss
@@ -60,7 +60,7 @@ def timegantrain(opt, ori_data):
                   ', g_loss_u: ' + str(np.round(model.G_loss_U.item(), 4)) +
                   ', g_loss_s: ' + str(np.round(np.sqrt(model.G_loss_S.item()), 4)) +
                   ', g_loss_v: ' + str(np.round(model.G_loss_V.item(), 4)) +
-                  ', e_loss_t0: ' + str(np.round(np.sqrt(model.E_loss_T0.item()), 4)))
+                  ', e_loss_t0: ' + str(np.round(np.sqrt(model.E_loss.item()), 4)))
     print('Finish Joint Training')
 
     # Save trained networks

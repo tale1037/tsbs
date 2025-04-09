@@ -9,7 +9,8 @@ class TimeGAN:
     def __init__(self, opt, ori_data):
 
         self.opt = opt
-        self.ori_data, self.min_val, self.max_val = MinMaxScaler(ori_data)
+        self.ori_data,self.max_value,self.min_value = MinMaxScaler(ori_data)
+        #self.ori_data = ori_data
         self.ori_time, self.max_seq_len = extract_time(self.ori_data)
         self.no, self.seq_len, self.z_dim = np.asarray(ori_data).shape
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -40,6 +41,7 @@ class TimeGAN:
         if self.opt.augargs.ganargs.load_checkpoint:
             self.load_trained_networks()
 
+
     def gen_batch(self):
 
         # Set training batch
@@ -65,13 +67,14 @@ class TimeGAN:
 
     def gen_synth_data(self, batch_size,data):
         self.Z = random_generator(batch_size, self.para['input_dim'], self.max_seq_len, self.ori_time)
-        self.Z = data
+        #self.Z = data
         #self.Z = torch.tensor(self.Z, dtype=torch.float32).to(self.device)
         self.Z = torch.tensor(np.array(self.Z), dtype=torch.float32).to(self.device)
         self.E_hat = self.generator(self.Z)
         self.H_hat = self.supervisor(self.E_hat)
         self.X_hat = self.recovery(self.H_hat)
-
+        self.max_value = torch.tensor(self.max_value, device=self.X_hat.device, dtype=self.X_hat.dtype)
+        self.min_value = torch.tensor(self.min_value, device=self.X_hat.device, dtype=self.X_hat.dtype)
         return self.X_hat
 
     def train_embedder(self, join_train=False):
@@ -79,8 +82,8 @@ class TimeGAN:
         self.recovery.train()
         self.optim_embedder.zero_grad()
         self.optim_recovery.zero_grad()
-        self.E_loss_T0 = self.MSELoss(self.X, self.X_tilde)
-        self.E_loss0 = 10 * torch.sqrt(self.E_loss_T0)
+        self.E_loss0 = self.MSELoss(self.X, self.X_tilde)
+        #self.E_loss0 = 10 * torch.sqrt(self.E_loss_T0)
         if not join_train:
             # E0_solver
             self.E_loss0.backward()

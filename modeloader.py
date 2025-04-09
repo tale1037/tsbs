@@ -1,4 +1,5 @@
 from augMethod.gan.timegan import TimeGAN
+from augMethod.timegan.timegan import TimeGAN as timegan
 from augMethod.vae.vae_utils import instantiate_vae_model
 from predictModels.CNN import CNN, CNN_lstm
 from predictModels.GRU import GRU
@@ -25,8 +26,22 @@ def get_model(model_name,args,ori_data = None):
         ),True
     elif model_name =="timeGAN":
         return TimeGAN(args, ori_data),True
+    elif model_name =="timeGANmyimple":
+        return timegan(
+            seq_len= args.seq_len,
+            module_name="gru",
+            feat_dim= args.feat_dim,
+            latent_dim=args.augargs.ganargs.latent_dim,
+            num_layers=args.augargs.ganargs.num_layers,
+            gamma=args.augargs.ganargs.gamma,
+            device=args.device,
+            learning_rate=args.augargs.ganargs.learning_rate,
+            batch_size=args.augargs.ganargs.batch_size,
+            networks_dir=args.augargs.ganargs.networks_dir,
+        ),True
+
     elif model_name == "CNN-LSTM":
-        return CNN_lstm(args.feat_dim, args.feat_dim, args.predictargs.pre_len, args.predictargs.hiddenSize, args.predictargs.laryerNum,args.seq_len,
+        return CNN_lstm(args.feat_dim, args.feat_dim, args.predictargs.pre_len, args.predictargs.hiddenSize, args.predictargs.laryerNum,args.predictargs.seq_len,
                     args.predictargs.dropout).to(args.device),True
     elif model_name == "LSTM":
         return LSTM(args.feat_dim, args.feat_dim, args.predictargs.pre_len, args.predictargs.hiddenSize, args.predictargs.laryerNum,
@@ -41,7 +56,7 @@ def get_model(model_name,args,ori_data = None):
         return MLP(args.feat_dim, args.predictargs.outputSize, args.predictargs.pre_len, args.predictargs.hiddenSize, args.predictargs.laryerNum,
                     args.predictargs.dropout).to(args.device),True
     elif model_name == "CNN":
-        return CNN(args.feat_dim, args.predictargs.outputSize, args.predictargs.pre_len, args.predictargs.hiddenSize, args.predictargs.laryerNum,args.seq_len,
+        return CNN(args.feat_dim, args.predictargs.outputSize, args.predictargs.pre_len, args.predictargs.hiddenSize, args.predictargs.laryerNum,args.predictargs.seq_len,
                     args.predictargs.dropout).to(args.device),True
     elif model_name == "XGBOOST":
         return XGBoost(args),False
